@@ -15,21 +15,17 @@ st.set_page_config(
 def calculate_portfolio_growth(initial_investment, annual_return_rate, monthly_contribution, time_period_years):
     """
     Calculates the annual portfolio value growth over a specified time period.
-    Uses monthly compounding for more accurate calculations - contributions are made 
-    at the beginning of each month and grow for the remaining months in that year.
+    This assumes monthly contributions are made at the end of each year after growth is applied.
     """
     annual_values = [initial_investment]
     portfolio_value = initial_investment
-    monthly_return_rate = annual_return_rate / 12
 
     for year in range(1, time_period_years + 1):
-        # Calculate monthly growth and contributions throughout the year
-        for month in range(12):
-            # Add monthly contribution at the beginning of the month
-            portfolio_value += monthly_contribution
-            # Apply monthly growth
-            portfolio_value *= (1 + monthly_return_rate)
-        
+        # Apply growth to current portfolio value first
+        portfolio_value *= (1 + annual_return_rate)
+        # Then add annual contributions (assumes contributions made at year-end)
+        annual_contributions = monthly_contribution * 12
+        portfolio_value += annual_contributions
         annual_values.append(portfolio_value)
 
     return annual_values
